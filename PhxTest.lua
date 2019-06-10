@@ -11,7 +11,7 @@ function wait(n)
 end
 --//list of commandss
 commandsList = {
-    help = function () --Help command
+    help = function (...) --Help command
         print("Use \"cmds\" to show available commands!")
     end,
     cmds = function () --Show commandss
@@ -77,23 +77,25 @@ else
     print("This is the unstable build PhxTest, current version: [" .. Phx.version .. "]")
 end
 --//io.read() loop
-while true do
-    ::start::
-    io.write("> ")
-    local userInputOriginal = io.read()
+while true do -- Will loop until the program is stopped
+    ::start:: -- The start of the while loop
+    io.write("> ") 
+    local userInputOriginal = io.read() -- Gets the original Userinput 
     if userInputOriginal == "" then print("Please enter a command!") goto start end
-    local userInput = string.lower(userInputOriginal)
-    local userInputList = {}
-    local userInputListCount = 0
-    for argument in string.gmatch(userInput, "[^%s]+") do
-        table.insert(userInputList, argument)
-        userInputListCount = userInputListCount + 1
+    local userInput = string.lower(userInputOriginal) -- Makes the user input small caps so it can run the cmds
+    local userInputList = {} -- the list of arugments 
+    local userInputListCount = 0 -- count of userInputList
+    for argument in string.gmatch(userInput, "[^%s]+") do -- Cuts the userinput into arugments and commands 
+        table.insert(userInputList, argument) -- inserts them into userInputList
+        userInputListCount = userInputListCount + 1 -- adds 1 to the count for each argument 
     end
-    if userInputListCount == 1 then
-        if commandsList[userInputList[1]] == nil then
+    if userInputListCount == 1 then -- if only a cmd is called in the userInput
+        if commandsList[userInputList[1]] == nil then -- if that cmd doesnt doesnt exist
             print("404: The command \"" .. userInputOriginal .. "\" either doesn't exist or is spelled wrong." )
-        else
+        else -- execute that command
             commandsList[userInputList[1]]()
         end
+    elseif userInputListCount > 1 then 
+            commandsList[userInputList[1]](userInputList[2])
     end
 end
