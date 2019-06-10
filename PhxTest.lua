@@ -16,13 +16,14 @@ end
 --//list of commandss
 commandsList = {
     help = function (...) --Help command
+        local helpCommandsList = {} -- table for the functions 
         local argc = select("#", ...) -- argument count
         if argc > 1 then print ("No more than one argument is allowed for this command.")
             elseif argc == 0 then 
                 print(" You can use help by entering a cmd name and it will show you the information about that cmd.\n\n help [cmd]")
-            elseif helpcommandslist[select(2, ...)] ~= nil then 
-                print(helpcommandslist[select(2, ...)])
-            else print(select(2, ...) .. " isn't a command")
+            elseif helpCommandsList[select(2, ...)] ~= nil then 
+                print(helpCommandsList[select(2, ...)])
+            else print(select(2, ...) .. " is not a vaild command")
         end
     end,
     
