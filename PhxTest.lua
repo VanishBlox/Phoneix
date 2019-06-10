@@ -2,7 +2,7 @@
 Phx = {
     version = "0.5v",
     language = "English", 
-    logo = "on" -- change it to "off" to turn the logo off, or "on" to turn it back
+    logo = "off" -- change it to "off" to turn the logo off, or "on" to turn it back
 }
 --[[Lua Addons crap]]
 --//Wait statment(in seconds)
@@ -74,7 +74,7 @@ end
 if Phx.logo == "on" then
     showLogo()
 else 
-    print("Welcome to Phoenix! Version: [ " .. Phx.version .. " ]")
+    print("This is the unstable build PhxTest, current version: [" .. Phx.version .. "]")
 end
 --//io.read() loop
 while true do
