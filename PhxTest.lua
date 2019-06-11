@@ -2,10 +2,31 @@
 Phx = {
     version = "0.5v",
     language = "English", 
-    logo = true, -- For the Huge ascii logo
+    logo = false, -- For the Huge ascii logo
+    OS,
+    Username,
 }
 
-
+function GOSAU() -- Get OS and Username
+    local OS, Username 
+    if package.config:sub(1,1) == "\\" then 
+        OS = "Windows"
+    else 
+        OS = "Unix"
+    end
+    if OS == "Windows" then
+        command = "echo %username%"
+    else 
+        command = "whoami"
+    end
+    local handle = io.popen(command)
+    local result = handle:read("*a")
+    result = result.gsub(result, "\n", "")
+    handle:close()
+    Phx.Username = result
+    Phx.OS = OS  
+end
+GOSAU()
 --[[Lua Addons crap]]
 --//Wait statment(in seconds)
 function wait(n)
@@ -15,15 +36,21 @@ end
 
 --//list of commandss
 commandsList = {
-    help = function (...) --Help command
-        local helpCommandsList = {} -- table for the functions 
-        local argc = select("#", ...) -- argument count
-        if argc > 1 then print ("No more than one argument is allowed for this command.")
-            elseif argc == 0 then 
-                print(" You can use help by entering a cmd name and it will show you the information about that cmd.\n\n help [cmd]")
-            elseif helpCommandsList[select(2, ...)] ~= nil then 
-                print(helpCommandsList[select(2, ...)])
-            else print(select(2, ...) .. " is not a vaild command")
+    help = function (args) --Help command
+        local helpCommandsList = {
+            cmds = "Shows the list of availabele cmds in Phoneix",
+            help = "You can use help by entering a cmd name and it will show you the information about that cmd.\n* One argument is required\n help [cmd]"
+        } 
+        
+        local argumentCounter = 0
+        if args ~= nil then argumentCounter = #args end 
+        
+        if argumentCounter > 1 then print ("No more than one argument is allowed for this command.")
+            elseif args == nil then 
+                print(helpCommandsList["help"])
+            elseif helpCommandsList[args[1]] ~= nil then 
+                print(helpCommandsList[args[1]])
+            else print(args[1] .. " is not a vaild command")
         end
     end,
     
@@ -46,6 +73,7 @@ commandsList = {
     info = function () --Info command
         print(" Version: " .. Phx.version)
         print(" Language: " .. Phx.language)
+        print(" Parent OS: " .. Phx.OS)
     end,
 }
 --[[
@@ -96,10 +124,8 @@ end
 
 --//io.read() loop
 while true do -- Will loop until the program is stopped
-    ::start:: -- The start of the while loop
-    io.write("> ") 
+    io.write("Phoneix/" .. Phx.Username .. ">") 
     local userInputOriginal = io.read() -- Gets the original Userinput 
-    if userInputOriginal == "" then print("Please enter a vaild command!") goto start end --blank userInput error
     local userInput = string.lower(userInputOriginal) -- Makes the user input small caps so it can run the cmds
     
     local userInputList = {} -- the list of arugments 
