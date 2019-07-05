@@ -7,11 +7,14 @@ Phx = {
     Username,
     color = os.execute("color E")
 }
+-- //Get Username and OS
+-- OS finder
 if package.config:sub(1,1) == "\\" then 
     Phx.OS = "Windows"
 else 
     Phx.OS = "Unix"
 end
+-- Username finder
 if Phx.OS == "Windows" then
     iopopencommand = "echo %username%"
 else 
@@ -21,7 +24,8 @@ local iopopenhandel = io.popen(iopopencommand)
 local iopopenresault = iopopenhandel:read("*a")
 Phx.Username = iopopenresault.gsub(iopopenresault, "\n", "")
 iopopenhandel:close()
-  --[[Lua Addons crap]]
+
+--[[Lua Addons crap]]
 --//Wait statment(in seconds)
 function wait(n)
     if n > 0 then os.execute("ping -n " .. tonumber(n+1) .. " localhost > NUL") end
