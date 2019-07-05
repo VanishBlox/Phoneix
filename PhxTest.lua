@@ -5,29 +5,23 @@ Phx = {
     logo = false, -- For the Huge ascii logo
     OS,
     Username,
+    color = os.execute("color E")
 }
-
-function GOSAU() -- Get OS and Username
-    local OS, Username 
-    if package.config:sub(1,1) == "\\" then 
-        OS = "Windows"
-    else 
-        OS = "Unix"
-    end
-    if OS == "Windows" then
-        command = "echo %username%"
-    else 
-        command = "whoami"
-    end
-    local handle = io.popen(command)
-    local result = handle:read("*a")
-    result = result.gsub(result, "\n", "")
-    handle:close()
-    Phx.Username = result
-    Phx.OS = OS  
+if package.config:sub(1,1) == "\\" then 
+    Phx.OS = "Windows"
+else 
+    Phx.OS = "Unix"
 end
-GOSAU()
---[[Lua Addons crap]]
+if Phx.OS == "Windows" then
+    iopopencommand = "echo %username%"
+else 
+    iopopencommand = "whoami"
+end
+local iopopenhandel = io.popen(iopopencommand)
+local iopopenresault = iopopenhandel:read("*a")
+Phx.Username = iopopenresault.gsub(iopopenresault, "\n", "")
+iopopenhandel:close()
+  --[[Lua Addons crap]]
 --//Wait statment(in seconds)
 function wait(n)
     if n > 0 then os.execute("ping -n " .. tonumber(n+1) .. " localhost > NUL") end
@@ -37,43 +31,60 @@ end
 --//list of commandss
 commandsList = {
     help = function (args) --Help command
-        local helpCommandsList = {
-            cmds = "Shows the list of availabele cmds in Phoneix",
-            help = "You can use help by entering a cmd name and it will show you the information about that cmd.\n* One argument is required\n help [cmd]"
+        local helpCommandsListShort = { --for shorter info
+            help = "Help // Shows the command list and help for currently available commands.",
+            info = "Info // Shows info about Phoniex and the current OS.",
+            exit = "Exit // Exits Phoniex terminal."
+        }
+        
+        local helpCommandsListLong = { --full info about usage
+            help = "// Help //\n\n//Description//\nShow the commands list if there are no arguments given,\nif a command is given as an arugment it will show help and correct usage for that command.\n\n//Usage//\n\"help [command from command list]\"",
+            info = "// Info //\n\n//Description//\nShows info about the current OS that Phoenix is running on, might be buggy.\n\n//Usage//\n\"info\"",
+            exit = "// Exit //\n\n//Description//\nShuts the Terminal down with only one command, isn't that handy? :)\n\n//Usage//\n\"exit\"",
         } 
         
         local argumentCounter = 0
         if args ~= nil then argumentCounter = #args end 
         
-        if argumentCounter > 1 then print ("No more than one argument is allowed for this command.")
+        if argumentCounter > 1 then print ("//505//: No more than one argument is allowed for this command.")
+        
             elseif args == nil then 
-                print(helpCommandsList["help"])
-            elseif helpCommandsList[args[1]] ~= nil then 
-                print(helpCommandsList[args[1]])
-            else print(args[1] .. " is not a vaild command")
+                print(helpCommandsListLong["help"] .. "\n\n// Commandlist //\n")
+                for i,v in pairs(helpCommandsListShort) do 
+                    print(v)
+                end
+            elseif helpCommandsListLong[args[1]] ~= nil then 
+                print(helpCommandsListLong[args[1]])
+            
+            else print("//404//: \"" .. args[1] .. "\" is not a valid command.")
         end
     end,
-    
-    cmds = function () --Show commandss
-        local commandsListShow = {
-            " CMDS    : Shows a list of a available commands.",
-            " HELP    : Shows help for individual commands.",
-            " EXIT    : Exit's the program.",
-            " INFO    : Show Phoneix's Info."
-        } 
-        for i,v in pairs(commandsListShow) do 
-            print(v)
-        end
-    end,
-    
     exit = function () --Shutdown command
+        print("Signing off...")
+        wait(0.5)
+        print("Goodbye!")
         os.exit()
     end,
     
     info = function () --Info command
-        print(" Version: " .. Phx.version)
-        print(" Language: " .. Phx.language)
-        print(" Parent OS: " .. Phx.OS)
+        print("Version: " .. Phx.version 
+        .. "\nLanguage: " .. Phx.language 
+        .. "\nParent OS: " .. Phx.OS
+        .. "\nUsername: " .. Phx.Username)
+    end,
+    hack = function () -- Showoff, it doesn't actually do anything LOL
+        io.write("Script loading")
+        for i=1,3 do 
+            wait(0.5)
+            io.write(".")
+        end
+        print("")
+        print("Hacking:")
+        for i=1,100 do
+            wait(0.1) 
+            print(i .. "%")
+        end
+        print("Process done! Welcome " .. Phx.Username .. " :))")
     end,
 }
 --[[
@@ -124,7 +135,8 @@ end
 
 --//io.read() loop
 while true do -- Will loop until the program is stopped
-    io.write("Phoneix/" .. Phx.Username .. ">") 
+    print("")
+    io.write("~* Phoneix/" .. Phx.Username .. ">") 
     local userInputOriginal = io.read() -- Gets the original Userinput 
     local userInput = string.lower(userInputOriginal) -- Makes the user input small caps so it can run the cmds
     
@@ -139,7 +151,7 @@ while true do -- Will loop until the program is stopped
     if userInputListCount == 1 then -- if only a cmd is called in the userInput
 
         if commandsList[userInputList[1]] == nil then -- if that cmd doesnt doesnt exist
-            print( "404: The command \"" .. userInputOriginal .. "\" either doesn't exist or is spelled wrong." )
+            print( "// 404 //: The command \"" .. userInputOriginal .. "\" either doesn't exist or is spelled wrong." )
         else -- execute that command
             commandsList[userInputList[1]]()
         end

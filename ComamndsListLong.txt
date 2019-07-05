@@ -1,0 +1,20 @@
+// help //		Shows the command list and help for currently available commands.
+	//Description//
+		Show the commands list if there are no arguments given, 
+		if a command is given as an arugment it will show help and correct usage for that command. 
+	//Usage//
+		"help [command from command list]"
+==================================================================
+// info // 		Shows info about Phoniex and the current OS.
+	//Description//
+		Shows you info about the current OS that Phoenix is running on, might be buggy
+	//Usage//
+		"info"
+==================================================================
+// exit // 		Exits Phoniex Terminal.
+	//Description//
+		Shuts the Terminal down with only one command, isn't that handy? :)
+	//Usage//
+		"exit"
+==================================================================
+

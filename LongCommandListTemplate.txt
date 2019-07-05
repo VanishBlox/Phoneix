@@ -1,0 +1,3 @@
+"// Help //\n\n//Description//\nShow the commands list if there are no arguments given,\nif a command is given as an arugment it will show help and correct usage for that command.\n\n//Usage//\n\"help [command from command list]\"",
+"// Info //\n\n//Description//\nShows info about the current OS that Phoenix is running on, might be buggy.\n\n//Usage//\n\"info\"",
+"// Exit //\n\n//Description//\nShuts the Terminal down with only one command, isn't that handy? :)\n\n//Usage//\n\"exit\"",
