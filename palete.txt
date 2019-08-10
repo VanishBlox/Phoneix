@@ -1,0 +1,16 @@
+0 = Black       
+1 = Blue        
+2 = Green       
+3 = Turquoise        
+4 = Red         
+5 = Purple      
+6 = Yellow      
+7 = Light_Gray       
+8 = Gray
+9 = Light_Blue
+A = Light_Green
+B = Light_Turquoise
+C = Light_Red
+D = Light_Purple
+E = Light_Yellow
+F = White
